@@ -1,4 +1,3 @@
-To be updated soon...
 
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a id="readme-top"></a>
@@ -189,7 +188,9 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Daira Santacruz - djs738@nau.edu
+Rita Bolanos - reb442@nau.edu
+Nathan Class - nc426@nau.edu
 
 Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
 
