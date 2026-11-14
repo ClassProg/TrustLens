@@ -114,25 +114,141 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 
 
 
+
+### Running Locally for the first time
+
 ### Prerequisites
+- Python 3.10+
+- Node.js and npm
+- Git
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+### 1. Backend (Flask)
+From the repository root:
 
-### Installation
+```bash
+cd src/backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
 
-1. 
-2. 
-3. 
-4. 
-5. 
+Backend: http://localhost:5000
+
+Test API: http://localhost:5000/api/health
+
+### 2. Frontend (React + Vite)
+Open a second terminal from the repository root:
+
+```bash
+cd src/frontend
+npm install
+npm run dev
+```
+
+Frontend: http://localhost:5173
+
+Keep both terminals running.
+
+### 3. Automated Tests
+
+Backend:
+```bash
+cd src/backend
+source .venv/bin/activate
+python -m pytest -q tests
+```
+
+Frontend:
+```bash
+cd src/frontend
+npm test
+```
+
+### 4. Dependencies
+
+**Backend — requirements.txt**
+
+Lists Python packages required by Flask and the AI pipeline.
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+When adding a new Python library:
+1. Install it in the virtual environment.
+2. Add it to `requirements.txt` with a tested version.
+3. Commit the updated file.
+
+Example:
+```bash
+pip install flask-cors
+pip show flask-cors
+```
+
+Add the installed version to `requirements.txt`:
+```text
+flask-cors==<installed-version>
+```
+
+**Frontend — package.json**
+
+Lists React/Vite dependencies.
+
+Install dependencies:
+```bash
+npm install
+```
+
+Add a new package:
+```bash
+npm install package-name
+```
+
+Commit both `package.json` and `package-lock.json`.
+
+## Running locally not for the first time
+
+
+After the initial setup, open two terminals from the repository root.
+
+**Terminal 1 — Backend (Flask)**
+```bash
+cd src/backend
+source .venv/bin/activate
+python app.py
+```
+
+**Terminal 2 — Frontend (React + Vite)**
+```bash
+cd src/frontend
+npm run dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- Backend: http://localhost:5000
+- API health check: http://localhost:5000/api/health
+
+Keep both terminals running while developing.
+Press `Ctrl + C` in each terminal to stop the servers.
+
+**Note:** No need to reinstall dependencies unless
+`requirements.txt` or `package.json` changes.
+
+
+### Notes
+- Initial setup commands only need to run once.
+- Start Flask and Vite each development session.
+- Never commit `.venv/`, `node_modules/`, or datasets.
+- The current AI results are simulated until real models are integrated.
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+##
 
 <!-- USAGE EXAMPLES -->
 ## Usage
