@@ -1,0 +1,2 @@
+import React from "react";
+export default function ExpertDisagreement({ data }) { return <section className="panel"><h2>Expert disagreement</h2>{data?.available ? <p>{data.agreement} ({data.level})</p> : <p>No verified expert grading data for this image.</p>}</section>; }
