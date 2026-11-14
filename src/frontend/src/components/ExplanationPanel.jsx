@@ -1,0 +1,2 @@
+import React from "react";
+export default function ExplanationPanel({ explanation }) { return <article className="panel"><h3>{explanation.label}</h3>{explanation.image ? <img className="preview" src={explanation.image.startsWith('data:') ? explanation.image : `data:image/png;base64,${explanation.image}`} alt={`${explanation.label} explanation`} /> : <p>{explanation.error || 'No visualization available.'}</p>}</article>; }

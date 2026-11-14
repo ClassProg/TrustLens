@@ -1,0 +1,2 @@
+import React from "react";
+export default function PredictionResult({ result, preview }) { return <section className="panel"><h2>2. Prediction</h2>{preview && <img className="preview" src={preview} alt="Uploaded retinal image" />}{result ? <><p><strong>{result.prediction.label}</strong></p><p>Illustrative model confidence: {(result.prediction.confidence * 100).toFixed(1)}%</p><p>Model: {result.prediction.model}</p></> : <p>No analysis yet.</p>}</section>; }

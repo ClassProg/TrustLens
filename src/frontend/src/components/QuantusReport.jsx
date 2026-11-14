@@ -1,0 +1,2 @@
+import React from "react";
+export default function QuantusReport({ quantus }) { return <section className="panel"><h2>4. Quantus evaluation</h2><p>Source: <strong>{quantus.source}</strong></p>{['faithfulness', 'robustness', 'localization'].map(k => <div key={k}><label>{k}: {quantus[k]}</label><progress value={quantus[k]} max="1" /></div>)}<small>Scores shown are illustrative until real evaluation is integrated. Metric interpretation depends on the chosen Quantus configuration.</small></section>; }
