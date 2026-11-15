@@ -1,10 +1,24 @@
 node_modules/
 frontend/dist/
 backend/.venv/
-__pycache__/
 *.pyc
 .env
 models/*
 !models/.gitkeep
 data/*
 !data/.gitkeep
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Heavy data & model weights
+Models/data/
+Models/outputs/
+*.pth
+
