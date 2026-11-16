@@ -255,9 +255,104 @@ Press `Ctrl + C` in each terminal to stop the servers.
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-Train the model: python -m Models.scripts.run_train
+## ResNet50 & Captum XAI Pipeline
 
-Run an XAI method on a fundus image: python -m Models.scripts.run_explain --image Models/data/REFUGE/val/Glaucoma/g0001.jpg 
+The `src/models/` directory contains a modular PyTorch pipeline for fine-tuning a pre-trained **ResNet50** classifier on the **REFUGE** retinal fundus dataset and generating side-by-side **Captum** explainability heatmaps (**Integrated Gradients**, **Grad-CAM**, and **LIME**).
+
+### Directory Structure
+
+```text
+src/
+├── Makefile                     # Automation commands for setup, training, and XAI
+├── requirements.txt             # PyTorch, Captum, scikit-image, and utility dependencies
+└── models/
+    ├── configs/
+    │   └── config.yaml          # Hyperparameters, class weights (1:9), and XAI settings
+    ├── data/                    # Local dataset directory (ignored by Git)
+    │   └── REFUGE/
+    │       ├── train/           # 400 images (Glaucoma / Non-Glaucoma)
+    │       ├── val/             # 400 images (Glaucoma / Non-Glaucoma)
+    │       └── test/            # 400 images (Glaucoma / Non-Glaucoma)
+    ├── outputs/                 # Saved checkpoints and heatmap PNGs (ignored by Git)
+    │   ├── checkpoints/         # Best fine-tuned weights (resnet50_best.pth)
+    │   └── heatmaps/            # Side-by-side Captum comparison figures
+    ├── scripts/
+    │   ├── prepare_refuge.py    # Sorts raw REFUGE splits into class folders
+    │   ├── run_train.py         # CLI entry point for model fine-tuning
+    │   └── run_explain.py       # CLI entry point for Captum attribution generation
+    ├── dataset.py               # REFUGEDataset class and ImageNet transforms
+    ├── model.py                 # Pre-trained ResNet50 architecture and binary head
+    ├── train.py                 # Training/validation loop with weighted CrossEntropyLoss
+    └── explain.py               # Integrated Gradients, Grad-CAM, and LIME wrappers
+```
+
+### 1. Environment Setup
+
+All commands below should be run from the `src/` directory. The `Makefile` automatically creates and manages an isolated `.venv/` virtual environment:
+
+```bash
+cd src
+make setup   # Creates .venv and installs requirements.txt
+make check   # Verifies module imports and CUDA GPU availability
+```
+
+### 2. Preparing the REFUGE Dataset
+
+Raw datasets and `.pth` checkpoints are excluded from version control. After downloading the **REFUGE** dataset locally, extract it to a temporary staging folder (e.g., `src/models/data/raw_refuge/REFUGE/`) and sort each split into `Glaucoma/` and `Non-Glaucoma/` subdirectories:
+
+```bash
+# Sort Training Split (400 images via g*/n* filename prefixes)
+PYTHONPATH=. .venv/bin/python -m models.scripts.prepare_refuge \
+  --raw_dir models/data/raw_refuge/REFUGE/REFUGE-Training400 \
+  --out_dir models/data/REFUGE/train
+
+# Sort Validation Split (400 images via ground-truth spreadsheet)
+PYTHONPATH=. .venv/bin/python -m models.scripts.prepare_refuge \
+  --raw_dir models/data/raw_refuge/REFUGE/REFUGE-Validation400 \
+  --labels models/data/raw_refuge/REFUGE/REFUGE-Validation400-GT/REFUGE-Validation400-GT/Fovea_locations.xlsx \
+  --out_dir models/data/REFUGE/val
+
+# Sort Test Split (400 images via ground-truth spreadsheet)
+PYTHONPATH=. .venv/bin/python -m models.scripts.prepare_refuge \
+  --raw_dir models/data/raw_refuge/REFUGE/Test400 \
+  --labels models/data/raw_refuge/REFUGE/REFUGE-Test-GT/Glaucoma_label_and_Fovea_location.xlsx \
+  --out_dir models/data/REFUGE/test
+```
+
+Once verified (1,200 images total), remove the temporary `src/models/data/raw_refuge/` directory.
+
+### 3. Training & Generating XAI Explanations
+
+* **Train ResNet50:** Fine-tunes the pre-trained ResNet50 using `[1.0, 9.0]` class weighting to address REFUGE's 1:9 glaucoma imbalance and saves the lowest validation-loss checkpoint to `src/models/outputs/checkpoints/resnet50_best.pth`:
+  ```bash
+  make train
+  ```
+
+* **Generate Captum Explanations:** Loads the saved checkpoint without retraining and outputs a 4-panel comparison (**Original**, **Integrated Gradients**, **Grad-CAM**, and **LIME**) to `src/models/outputs/heatmaps/`:
+  ```bash
+  # Explain a specific test image
+  make explain IMAGE=models/data/REFUGE/test/Glaucoma/T0001.jpg
+
+  # Or run without IMAGE= to explain a random test image
+  make explain
+  ```
+
+### 4. Configuration Reference (`src/models/configs/config.yaml`)
+
+All dataset paths, training parameters, and Captum attribution settings are centralized in `config.yaml`:
+
+| Section | Parameter | Default | Description |
+| :--- | :--- | :--- | :--- |
+| **`data`** | `image_size` | `224` | Input resolution (`224 × 224`) required by ResNet50. |
+| **`data`** | `batch_size` | `16` | Number of images per training/validation batch. |
+| **`training`** | `epochs` | `10` | Total fine-tuning passes over the training dataset. |
+| **`training`** | `learning_rate` | `0.0001` | AdamW optimizer step size (`1e-4`). |
+| **`training`** | `class_weights` | `[1.0, 9.0]` | Loss weights for `[Non-Glaucoma, Glaucoma]` to offset the 1:9 class imbalance. |
+| **`explainability`** | `ig_steps` | `50` | Number of interpolation steps used by Integrated Gradients. |
+| **`explainability`** | `lime_segments` | `100` | Target number of SLIC superpixels generated per fundus image for LIME. |
+| **`explainability`** | `lime_samples` | `500` | Number of perturbed image samples evaluated by LIME's surrogate model. |
+| **`explainability`** | `lime_batch_size` | `32` | Perturbations evaluated per GPU forward pass during LIME attribution. |
+
 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
