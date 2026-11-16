@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import webLogo from '../assets/weblogo.png';
 
 
 const steps = [
@@ -21,7 +22,7 @@ export default function LandingPage() {
   }, []);
   return <div className="site">
     <nav className="site-nav" aria-label="Main navigation">
-      <Link className="brand" to="/" aria-label="TrustLens home">TrustLens</Link>
+      <Link className="brand" to="/" aria-label="TrustLens home"><img className="brand-logo" src={webLogo} alt="" />TrustLens</Link>
       <div className="nav-links"><a href="#about">About</a><a href="#how">How it works</a><a href="#why">Why TrustLens</a></div>
       <Link className="nav-cta" to="/app">Try TrustLens <span aria-hidden="true">↗</span></Link>
     </nav>
@@ -30,7 +31,7 @@ export default function LandingPage() {
         <div className="hero-glow" aria-hidden="true" />
         <div className="hero-content reveal is-visible">
           <span className="eyebrow"><span className="status-dot" /> RESEARCH PLATFORM · EXPLAINABLE AI</span>
-          <h1>TrustLens</h1>
+          <h1 className="hero-title"><img className="hero-logo" src={webLogo} alt="" />TrustLens</h1>
           <h2 className="hero-statement">See beyond<br/><em>the prediction.</em></h2>
           <p>A research framework for benchmarking explainable AI in retinal imaging. Explore predictions, inspect explanations, and evaluate how they perform.</p>
           <div className="hero-actions"><Link className="primary-cta" to="/app">Try TrustLens <span aria-hidden="true">↗</span></Link><a className="secondary-cta" href="#about">Discover the platform <span aria-hidden="true">↓</span></a></div>
