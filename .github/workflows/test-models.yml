@@ -1,0 +1,42 @@
+name: ResNet50 & Captum Model Tests
+
+on:
+  push:
+    branches: [ main, ResNet50-Captum ]
+    paths:
+      - 'src/models/**'
+      - 'src/requirements.txt'
+      - '.github/workflows/model-tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/models/**'
+      - 'src/requirements.txt'
+
+jobs:
+  test-model-pipeline:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'src/requirements.txt'
+
+      - name: Install CPU PyTorch and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch torchvision --index-url https://pytorch.org
+          pip install captum scikit-image scikit-learn pillow matplotlib pyyaml numpy pytest
+
+      - name: Run ResNet50 & Captum pipeline tests
+        run: |
+          PYTHONPATH=. pytest -v models/tests/
