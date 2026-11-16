@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config import MOCK_MODE
 from pipeline.preprocess import validate_image
 from pipeline.disagreement import get_disagreement
+from pipeline.classify import predict
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
