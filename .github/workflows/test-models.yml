@@ -6,7 +6,7 @@ on:
     paths:
       - 'src/models/**'
       - 'src/requirements.txt'
-      - '.github/workflows/model-tests.yml'
+      - '.github/workflows/test-models.yml'
   pull_request:
     branches: [ main ]
     paths:
