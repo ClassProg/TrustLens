@@ -1,6 +1,6 @@
 data:
-  train_dir: "data/REFUGE/train"
-  val_dir: "data/REFUGE/val"
+  train_dir: "models/data/REFUGE/train"
+  val_dir: "models/data/REFUGE/val"
   image_size: 224
   batch_size: 16
   num_workers: 2
@@ -8,7 +8,7 @@ data:
 model:
   num_classes: 2
   pretrained: true
-  checkpoint_path: "outputs/checkpoints/resnet50_best.pth"
+  checkpoint_path: "models/outputs/checkpoints/resnet50_best.pth"
 
 training:
   epochs: 10
@@ -17,7 +17,7 @@ training:
   class_weights: [1.0, 9.0]  # Handles 1:9 REFUGE imbalance (Non-Glaucoma vs Glaucoma)
 
 explainability:
-  output_dir: "outputs/heatmaps"
+  output_dir: "models/outputs/heatmaps"
   ig_steps: 50
   lime_segments: 100
   lime_samples: 500

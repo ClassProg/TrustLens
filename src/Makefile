@@ -31,7 +31,12 @@ train: setup
 	PYTHONPATH=. $(PYTHON) -m models.scripts.run_train
 
 explain: setup
-	PYTHONPATH=. $(PYTHON) -m models.scripts.run_explain --image $(or $(IMAGE),$(DEFAULT_IMAGE)) --config $(CONFIG)
+	@TARGET_IMG="$(IMAGE)"; \
+	if [ -z "$$TARGET_IMG" ]; then \
+		TARGET_IMG=$$(find models/data/REFUGE/test -type f \( -iname "*.jpg" -o -iname "*.png" \) | shuf -n 1); \
+	fi; \
+	echo "Explaining image: $$TARGET_IMG"; \
+	PYTHONPATH=. $(PYTHON) -m models.scripts.run_explain --image "$$TARGET_IMG" --config $(CONFIG)
 
 clean-venv:
 	rm -rf $(VENV)

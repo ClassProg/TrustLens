@@ -9,7 +9,7 @@ from captum.attr import IntegratedGradients, LayerGradCam, Lime, LayerAttributio
 from captum.attr import visualization as viz
 from captum._utils.models.linear_model import SkLearnLinearRegression
 
-from src.dataset import get_transforms
+from models.dataset import get_transforms
 
 
 def explain_image(model, image_path, cfg, device):
@@ -47,7 +47,7 @@ def explain_image(model, image_path, cfg, device):
     # 3. Layer Grad-CAM (final ResNet50 bottleneck block)
     gradcam = LayerGradCam(model, model.layer4[-1])
     attr_gc = gradcam.attribute(input_tensor, target=pred_class)
-    upsampled_gc = LayerAttribution.interpolate(attr_gc, (img_size, img_size))
+    upsampled_gc = LayerAttribution.interpolate(attr_gc, (img_size, img_size), interpolate_mode="bilinear")
     attr_gc_np = np.transpose(upsampled_gc.squeeze(0).cpu().detach().numpy(), (1, 2, 0))
 
     # 4. LIME (Superpixel perturbation)
@@ -97,6 +97,8 @@ def explain_image(model, image_path, cfg, device):
     )
 
     plt.tight_layout()
+    if os.path.exists(save_path):
+        os.remove(save_path)
     plt.savefig(save_path, dpi=200)
     plt.close(fig)
     print(f"Saved explanation heatmap to {save_path}")

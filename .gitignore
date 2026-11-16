@@ -22,3 +22,12 @@ Models/data/
 Models/outputs/
 *.pth
 
+
+# Datasets, virtual environments, and model outputs
+src/models/data/
+src/models/outputs/
+src/.venv/
+*.pth
+*.zip
+*.rar
+__pycache__/
