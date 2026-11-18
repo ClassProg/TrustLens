@@ -50,6 +50,7 @@ def main():
         cfg["model"]["checkpoint_path"],
         device,
     )
+    print(f"Loaded checkpoint: {cfg['model']['checkpoint_path']}")
 
     print(f"Explaining with: {architecture}")
     print(f"Device: {device}")

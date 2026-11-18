@@ -2,7 +2,7 @@ VENV = .venv
 PYTHON = $(VENV)/bin/python
 PIP = $(VENV)/bin/pip
 CONFIG = models/configs/config.yaml
-DEFAULT_IMAGE = models/data/REFUGE/val/Glaucoma/g0001.jpg
+DEFAULT_IMAGE = ../data/REFUGE/val/Glaucoma/g0001.jpg
 
 .PHONY: help setup check train explain clean-venv
 

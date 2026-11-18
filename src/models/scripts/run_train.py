@@ -1,5 +1,7 @@
 import yaml
 import torch
+import random
+import numpy as np
 
 from models.dataset import get_dataloaders
 from models.model import build_model
@@ -10,6 +12,17 @@ def main():
     # Load configuration
     with open("models/configs/config.yaml", "r") as f:
         cfg = yaml.safe_load(f)
+
+    seed = cfg["training"].get("seed", 42)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+    print(f"Random seed: {seed}")
 
     # Select available GPU or CPU
     if torch.cuda.is_available():
@@ -27,8 +40,10 @@ def main():
     # Build selected model architecture
     model = build_model(
         architecture=cfg["model"]["architecture"],
-        num_classes=cfg["model"]["num_classes"],
+        num_classes=2,
         pretrained=cfg["model"]["pretrained"],
+        freeze_backbone=cfg["model"].get("freeze_backbone", False),
+        unfreeze_layer4=cfg["model"].get("unfreeze_layer4", False),
     )
 
     print(f"Training model: {cfg['model']['architecture']}")

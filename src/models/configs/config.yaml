@@ -1,21 +1,33 @@
 data:
-  train_dir: "models/data/REFUGE/train"
-  val_dir: "models/data/REFUGE/val"
-  image_size: 224
+  train_dir: ../data/REFUGE/train
+  val_dir: ../data/REFUGE/val
+  val_labels: ../data/REFUGE/REFUGE-Validation400-GT/REFUGE-Validation400-GT/fovea_locations.xlsx
+  image_size: 320
   batch_size: 16
   num_workers: 2
+  crop_optic_disc: true
+  crop_fraction: 0.70
 
 model:
   architecture: "resnet50"
   num_classes: 2
   pretrained: true
-  checkpoint_path: "models/outputs/checkpoints/resnet50_best.pth"
+  freeze_backbone: true
+  unfreeze_layer4: true
+  checkpoint_path: "models/outputs/checkpoints/resnet50_320_weight9_coloraug_disccrop70_seed42.pth"
+  prediction_threshold: 0.36
 
 training:
-  epochs: 10
+  epochs: 15
   learning_rate: 0.0001
   weight_decay: 0.0001
-  class_weights: [1.0, 9.0]  # Handles 1:9 REFUGE imbalance (Non-Glaucoma vs Glaucoma)
+  class_weights: [1.0, 9.0]
+  seed: 42
+  early_stopping_patience: 4
+  positive_class: 1
+
+evaluation:
+  results_csv: "models/outputs/evaluations/model_results.csv"
 
 explainability:
   output_dir: "models/outputs/heatmaps"
