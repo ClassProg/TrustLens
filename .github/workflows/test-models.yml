@@ -2,7 +2,7 @@ name: ResNet50 & Captum Model Tests
 
 on:
   push:
-    branches: [ main, ResNet50-Captum ]
+    branches: [ main, Resnet50_Densenet121 ]
     paths:
       - 'src/models/**'
       - 'src/requirements.txt'
@@ -12,10 +12,12 @@ on:
     paths:
       - 'src/models/**'
       - 'src/requirements.txt'
+      - '.github/workflows/test-models.yml'
 
 jobs:
   test-model-pipeline:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: src
@@ -37,7 +39,5 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install pytest
 
-
-      - name: Run ResNet50 & Captum pipeline tests
-        run: |
-          PYTHONPATH=. pytest -v models/tests/
+      - name: Run model tests
+        run: PYTHONPATH=. python -m pytest -v models/tests/
