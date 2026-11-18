@@ -118,7 +118,7 @@ def test_train_and_captum_explain_end_to_end(tmp_path, architecture):
     explain_image(loaded_model, test_img, cfg, device)
 
     expected_png = os.path.join(
-        heatmap_dir, f"sample_0_{architecture}_captum.png"
+        heatmap_dir, f"sample_0_test_{architecture}_captum.png"
     )
     assert os.path.exists(expected_png)
 
