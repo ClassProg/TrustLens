@@ -39,5 +39,11 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install pytest
 
+      - name: Verify Python dependencies
+        run: |
+          python -m pip show pandas
+          python -m pip show openpyxl
+          python -m pip show pytest    
+
       - name: Run model tests
         run: PYTHONPATH=. python -m pytest -v models/tests/
