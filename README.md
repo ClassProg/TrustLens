@@ -112,8 +112,30 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
+### Design Review demo
 
+From the repository root:
 
+```bash
+cd src/frontend
+npm ci
+npm run dev
+```
+
+Open http://127.0.0.1:5173/app and choose an image your browser can display.
+The preview stays in the browser tab and the fixed results appear after a
+two-second simulation. The demo runs independently of Flask.
+
+The three explanation panels are bundled in `src/frontend/public/assets/`.
+They are full-resolution crops from columns two through four of
+`V0075_resnet50_320_weight9_coloraug_disccrop70_lr01_seed42_captum.png`.
+The dashboard shows a placeholder if an individual asset fails to load.
+
+Set `VITE_TRUSTLENS_DEMO_MODE=false` before starting Vite or building to open
+the existing Flask-backed prototype at `/app`. For future live inference,
+integrate the trained model and evaluation into `/api/analyze`, preserving
+the response fields used by the existing dashboard. The flag selects the
+workspace. Flask currently returns mock data or reports live analysis unavailable.
 
 ### Running Locally for the first time
 
@@ -148,7 +170,7 @@ npm run dev
 
 Frontend: http://localhost:5173
 
-Keep both terminals running.
+Keep both terminals running when using the Flask-backed workspace.
 
 ### 3. Automated Tests
 

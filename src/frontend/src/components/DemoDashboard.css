@@ -1,0 +1,105 @@
+.demo-banner {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  padding: 12px 18px;
+  border-block: 1px solid #31cdb460;
+  background: #102623;
+  color: #c2fff0;
+  text-align: center;
+  font-size: clamp(.875rem, 2vw, 1rem);
+}
+
+.demo-main { padding-top: clamp(24px, 4vw, 52px); }
+
+.demo-overview .panel { margin-block: 0; }
+
+.demo-preview { margin: 0; }
+
+.demo-preview .image-frame { margin-bottom: 8px; }
+
+.demo-preview figcaption {
+  color: var(--muted);
+  font-size: .875rem;
+  overflow-wrap: anywhere;
+}
+
+.demo-prediction {
+  background: linear-gradient(145deg, #102831, #0e1622 75%);
+  border-color: #31cdb460;
+}
+
+.demo-prediction h2 { color: #a6f5e3; }
+
+.demo-prediction .demo-prediction-value {
+  color: #f5fff9;
+  font: 800 clamp(1.75rem, 3.8vw, 3rem)/1.12 Manrope, sans-serif;
+  letter-spacing: -.035em;
+  margin-bottom: 24px;
+}
+
+.demo-prediction-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 36px;
+  margin: 0 0 16px;
+}
+
+.demo-prediction-details dt { color: var(--muted); }
+
+.demo-prediction-details dd {
+  margin: 4px 0 0;
+  color: #a6f5e3;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.demo-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #31cdb440;
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: demo-spin .8s linear infinite;
+}
+
+@keyframes demo-spin { to { transform: rotate(1turn); } }
+
+.demo-note { color: var(--muted); }
+
+.demo-explanation h3 { margin-bottom: 12px; }
+
+.demo-reference {
+  overflow: hidden;
+  border-radius: 6px;
+  background: #080f19;
+}
+
+.demo-reference img { display: block; width: 100%; }
+
+.demo-evaluation { margin-top: 24px; }
+
+.demo-evaluation h2 { font-size: clamp(1.2rem, 3vw, 1.6rem); margin-bottom: 10px; }
+
+.demo-evaluation p:last-child { margin-bottom: 0; }
+
+.demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: clamp(.8rem, 2.4vw, 1rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-table th, .demo-table td {
+  padding: 10px clamp(4px, 1.5vw, 18px);
+  border-bottom: 1px solid #263544;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.demo-table th:first-child { text-align: left; }
+
+.demo-table thead { background: #132a40; }
+
+.demo-table td { color: #a6f5e3; font-weight: 700; }
